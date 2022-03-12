@@ -1,0 +1,1 @@
+void paths_run(char **args, char *path);

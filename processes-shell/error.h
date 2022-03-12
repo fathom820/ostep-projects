@@ -1,0 +1,1 @@
+void cmd_error (char *msg);
