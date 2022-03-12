@@ -14,11 +14,13 @@ void paths_init_cwd() {
        //printf("Current working dir: %s\n", cwd);
    } else {
        perror("getcwd() error");
-       return 1;
    }
 }
 
-void paths_run(char **args, char *path) {
+// TODO: paths_set
+
+int paths_run(char **args, char *path) {
+    int found = 0;
     //paths_init_cwd(); // set *cwd to current working directory so it can be reset at the end
     DIR *p = opendir(path);
     //chdir(path); // change directory to path
@@ -28,6 +30,7 @@ void paths_run(char **args, char *path) {
 
     if (access(full, F_OK) == 0) {
         // file exists
+        found = 1;
         int pid = fork();
 
         //args[1][strcspn(args[1], "\r\n")] = 0;
@@ -39,8 +42,9 @@ void paths_run(char **args, char *path) {
         
 
     } else {
-        // file doens't exist
+        // file ain't exist
     }
 
+    return found;
     //chdir(cwd); // change directory back to normal (executable directory)
 }

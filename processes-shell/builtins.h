@@ -1,1 +1,1 @@
-void builtins_run(char **args);
+int builtins_run(char **args);

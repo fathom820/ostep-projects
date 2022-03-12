@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <error.h>
 #include <string.h>
 
 #include "cmdops.h" // command operations
 #include "builtins.h" // builtin commands
 #include "paths.h" // attack on titan reference lol
+#include "error.h" // cmd_error()
 
 /** @deprecated */
 char **cmd_args;
-extern char *path = "/bin/";
+char *path = "/bin/";
 
 int main (int argc, char *argv[]) {
     
@@ -33,10 +33,14 @@ int main (int argc, char *argv[]) {
             char *cmd = cmd_args[0];
 
             // built-ins
-            builtins_run(cmd_args);
+            //builtins_run(cmd_args);
 
             // paths
-            paths_run(cmd_args, path);
+            //paths_run(cmd_args, path);
+
+            if (!builtins_run(cmd_args) && !paths_run(cmd_args, path)) {
+                cmd_error("An error has occurred\n");
+            }
         }
 
         fclose(fp);
