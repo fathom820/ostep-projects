@@ -1,1 +1,1 @@
-An error has occurred
+../tester/run-tests.sh: line 27:  2982 Segmentation fault      ./wish tests/7.in

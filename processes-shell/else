@@ -1,0 +1,13 @@
+chdir(path);
+        if(access(args[0], R_OK)) {
+            //printf("found\n");
+            found = 1;
+            int pid = fork();
+
+            if (pid == 0) {
+                //printf("%s%s\n", path, args[0]);
+                execv(args[0], args);
+                perror("execv");
+            }
+        }
+        chdir(cwd);

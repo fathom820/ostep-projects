@@ -4,11 +4,11 @@
 
 
 #include "cmdops.h"
+#include "error.h"
 
 #define BUFSIZE 256
 
-//extern char **cmd_args[];
-
+extern int cmd_args_len;
 
 /**
  * @brief Get argument count of command passed to shell
@@ -81,7 +81,23 @@ char *cmdops_read_line(char line[]) {
     }
 }
 
+char **cmdops_get_redirect(char *line) {
+    // line is modified
+    char **out = malloc(2 * sizeof(char*)); // 2 element array
+    int bufsize = BUFSIZE;
+    int pos = 0;
+
+    out[0] = strtok(line, ">");
+    //printf(out[0]);
+    out[1] = strtok(NULL, ">");
+    //printf(out[1]);
+
+
+    return out;
+}
+
 char **cmdops_split_line(char *line) {
+    cmd_args_len = 0;
     int bufsize = BUFSIZE;
     int pos = 0;
 
@@ -97,6 +113,7 @@ char **cmdops_split_line(char *line) {
     while (token != NULL) {
         tokens[pos] = token;
         pos++;
+        cmd_args_len++;
 
         // resize array if necessary (90% of the time)
         if (pos >= bufsize) {

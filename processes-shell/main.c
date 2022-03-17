@@ -7,9 +7,11 @@
 #include "paths.h" // attack on titan reference lol
 #include "error.h" // cmd_error()
 
-/** @deprecated */
 char **cmd_args;
-char *path = "/bin/";
+int cmd_args_len;
+
+char *output_file;
+
 
 int main (int argc, char *argv[]) {
     
@@ -27,19 +29,17 @@ int main (int argc, char *argv[]) {
         size_t read;
 
         while ((read = getline(&line, &len, fp)) != -1) {
-            //printf("%s", line);
             line[strcspn(line, "\r\n")] = 0; // remove newline
-            cmd_args = cmdops_split_line(line);
+            
+            char **temp = cmdops_get_redirect(line);
+            cmd_args = cmdops_split_line(temp[0]);
+            output_file = temp[1];
             char *cmd = cmd_args[0];
-
-            // built-ins
-            //builtins_run(cmd_args);
-
-            // paths
-            //paths_run(cmd_args, path);
-
-            if (!builtins_run(cmd_args) && !paths_run(cmd_args, path)) {
-                cmd_error("An error has occurred\n");
+            
+            if (!builtins_run(cmd_args)) {
+                if(!paths_run(cmd_args)) {
+                    cmd_error("An error has occurred\n");
+                }
             }
         }
 
@@ -58,5 +58,4 @@ int main (int argc, char *argv[]) {
     else {
         puts("Max arguments: 1");
     }
-
 }

@@ -5,6 +5,10 @@
 
 #include "builtins.h"
 #include "error.h"
+#include "paths.h"
+
+
+extern char *path;
 
 int builtins_run(char **args) {
     int found = 0;
@@ -19,7 +23,7 @@ int builtins_run(char **args) {
         } else {
             exit(EXIT_SUCCESS);
         }
-        printf("builtins.c[19]: this shouldn't print\n"); // Why did I need to write this? it's a long story...
+        printf("builtins.c[19] : this shouldn't print\n"); // Why did I need to write this? it's a long story...
     }
     if (strcmp(cmd, "cd") == 0) {
         found = 1;
@@ -40,8 +44,16 @@ int builtins_run(char **args) {
         }
     }
     if (strcmp(cmd, "path") == 0) {
-        
+        if (args[1] != NULL) {
+            if (args[2] == NULL) {
+                paths_set(args[1]);
+            } else {
+                cmd_error("An error has occurred\n");
+            }
+        } else {
+            paths_set(NULL);
+        } 
+        found = 1;
     }
-
     return found;
 }

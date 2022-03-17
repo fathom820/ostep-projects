@@ -1,12 +1,18 @@
 #include <dirent.h>         // opendir()
 #include <unistd.h>         // access()
 #include <linux/limits.h>   // PATH_MAX
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 #include "paths.h"
 
-const char *cwd[PATH_MAX];
+
+char cwd[PATH_MAX];
+
+//char *path = "/bin";
+
+char *path[] = {"/bin", NULL};
 
 // PRIVATE //
 void paths_init_cwd() {
@@ -17,34 +23,47 @@ void paths_init_cwd() {
    }
 }
 
-// TODO: paths_set
+void paths_set(char *newpath) {
+    if (newpath == NULL) {
+        path = NULL;
+    } else {
+        char final[256];
+        //strcpy(final, "/");
+        strcpy(final, newpath);
+        strcat(final, "/");
+        path = (char*) final;
 
-int paths_run(char **args, char *path) {
+    //printf("%s\n", path);
+    }
+    
+}
+
+int paths_run(char **args) {
+    
     int found = 0;
-    //paths_init_cwd(); // set *cwd to current working directory so it can be reset at the end
-    DIR *p = opendir(path);
-    //chdir(path); // change directory to path
-    char full[256]; // create empty string
-    strcpy(full, path); // add
-    strcat(full, args[0]);
+    paths_init_cwd(); // set *cwd to current working directory so it can be reset at the end
 
-    if (access(full, F_OK) == 0) {
-        // file exists
+    char full[1024]; // create empty string
+    strcpy(full, path); // copy path to string
+    strcat(full, "/");
+    strcat(full, args[0]); // append filename to path*/
+    
+    //printf("%s\n", full);
+    
+    if (access(full, R_OK) == 0) {
+    // file exists
+        
+        //printf("%s", "found\n");
         found = 1;
         int pid = fork();
 
-        //args[1][strcspn(args[1], "\r\n")] = 0;
-
         if (pid == 0) {
             execv(full, args);
-            printf("paths.c:31 : this shouldn't print\n");
+            printf("paths.c : this shouldn't print\n");
         }
-        
 
     } else {
-        // file ain't exist
+        //printf("%s\n", "not found");
     }
-
     return found;
-    //chdir(cwd); // change directory back to normal (executable directory)
 }
