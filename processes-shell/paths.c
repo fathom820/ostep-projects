@@ -6,13 +6,14 @@
 #include <stdio.h>
 
 #include "paths.h"
+#include "cmdops.h"
 
 
 char cwd[PATH_MAX];
 
 //char *path = "/bin";
 
-char *path[] = {"/bin", NULL};
+char *path[256] = {"/bin", NULL};
 
 // PRIVATE //
 void paths_init_cwd() {
@@ -23,19 +24,11 @@ void paths_init_cwd() {
    }
 }
 
-void paths_set(char *newpath) {
-    if (newpath == NULL) {
-        path = NULL;
-    } else {
-        char final[256];
-        //strcpy(final, "/");
-        strcpy(final, newpath);
-        strcat(final, "/");
-        path = (char*) final;
-
-    //printf("%s\n", path);
+void paths_set(char **newpath) {
+    int i = 0;
+    while (newpath[i] != NULL) {
+        path[i] = newpath[i];
     }
-    
 }
 
 int paths_run(char **args) {
