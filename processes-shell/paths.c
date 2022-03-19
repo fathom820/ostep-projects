@@ -13,7 +13,8 @@ char cwd[PATH_MAX];
 
 //char *path = "/bin";
 
-char *path[256] = {"/bin", NULL};
+char path[256][256] = {"/bin"};
+extern int path_len = 1;
 
 // PRIVATE //
 void paths_init_cwd() {
@@ -24,22 +25,49 @@ void paths_init_cwd() {
    }
 }
 
-void paths_set(char **newpath) {
-    int i = 0;
-    while (newpath[i] != NULL) {
-        path[i] = newpath[i];
+
+
+void paths_set(char *newpath[256], int len) {
+    
+    for (int i = 0; i < len; i++) {
+        strcpy(path[i], newpath[i]);
     }
+    path_len = len;
 }
 
 int paths_run(char **args) {
     
-    int found = 0;
-    paths_init_cwd(); // set *cwd to current working directory so it can be reset at the end
+    if (path_len == 0) {
+        return 0; // don't waste time searching if there's no path to search
+    }
 
-    char full[1024]; // create empty string
-    strcpy(full, path); // copy path to string
+    int found = 0;
+    int i = 0;
+
+    while(found == 0 && i < path_len) {
+        
+        char full[2048];
+        strcpy(full, path[i]);
+        strcat(full, "/");
+        strcat(full, args[0]);
+
+        if (access(full, R_OK) == 0) {
+            found = 1;
+            int pid = fork();
+
+            if (pid == 0) {
+                execv(full, args);
+                printf("this shouldn't print\n");
+                perror("execv");
+            }
+        }
+        i++;
+    }
+  
+    /*char full[1024]; // create empty string
+    strcpy(full, path[i]); // copy path to string
     strcat(full, "/");
-    strcat(full, args[0]); // append filename to path*/
+    strcat(full, args[0]); // append filename to path
     
     //printf("%s\n", full);
     
@@ -56,7 +84,6 @@ int paths_run(char **args) {
         }
 
     } else {
-        //printf("%s\n", "not found");
-    }
+    }*/
     return found;
 }

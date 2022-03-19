@@ -14,7 +14,9 @@ char *output_file;
 
 
 int main (int argc, char *argv[]) {
-    
+    //char *default_path[256] = {"/bin"};
+    //char default_path_len = 1;
+    //paths_set(default_path, default_path_len);
     // runs batch mode (! tests use this mode !)
     if (argc == 2) {
         FILE *fp = fopen(argv[1], "r"); 
@@ -33,6 +35,7 @@ int main (int argc, char *argv[]) {
             
             char **temp = cmdops_get_redirect(line);
             cmd_args = cmdops_split_line(temp[0]);
+            
             output_file = temp[1];
             char *cmd = cmd_args[0];
             
