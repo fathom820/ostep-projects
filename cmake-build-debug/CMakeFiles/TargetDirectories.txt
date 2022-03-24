@@ -1,0 +1,3 @@
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug/CMakeFiles/ostep_projects.dir
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug/CMakeFiles/edit_cache.dir

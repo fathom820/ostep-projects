@@ -1,0 +1,200 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/io_helper.c
+io_helper.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/io_helper.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/io_helper.h
+arpa/inet.h
+-
+assert.h
+-
+ctype.h
+-
+errno.h
+-
+fcntl.h
+-
+netdb.h
+-
+netinet/in.h
+-
+setjmp.h
+-
+signal.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+strings.h
+-
+sys/mman.h
+-
+sys/time.h
+-
+sys/socket.h
+-
+sys/stat.h
+-
+sys/types.h
+-
+sys/wait.h
+-
+unistd.h
+-
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/request.c
+io_helper.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/io_helper.h
+request.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/request.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/request.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/spin.c
+assert.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+sys/time.h
+-
+unistd.h
+-
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/wclient.c
+io_helper.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/io_helper.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/wserver.c
+stdio.h
+-
+request.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/request.h
+io_helper.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/io_helper.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/test_1.c
+types.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/types.h
+stat.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/stat.h
+user.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/user.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/test_2.c
+types.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/types.h
+stat.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/stat.h
+user.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/user.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/builtins.c
+stdlib.h
+-
+string.h
+-
+stdio.h
+-
+unistd.h
+-
+builtins.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/builtins.h
+error.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/error.h
+paths.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/paths.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/builtins.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/cmdops.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+cmdops.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/cmdops.h
+error.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/error.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/cmdops.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/error.c
+stdio.h
+-
+stdlib.h
+-
+error.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/error.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/error.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/main.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+sys/stat.h
+-
+unistd.h
+-
+fcntl.h
+-
+sys/types.h
+-
+sys/stat.h
+-
+cmdops.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/cmdops.h
+builtins.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/builtins.h
+paths.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/paths.h
+error.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/error.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/paths.c
+dirent.h
+-
+unistd.h
+-
+linux/limits.h
+-
+stdlib.h
+-
+string.h
+-
+stdio.h
+-
+paths.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/paths.h
+cmdops.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/cmdops.h
+redirect.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/redirect.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/paths.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/redirect.c
+redirect.h
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/redirect.h
+
+/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/redirect.h
+

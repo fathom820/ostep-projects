@@ -11,35 +11,6 @@
 extern int cmd_args_len;
 
 /**
- * @brief Get argument count of command passed to shell
- * 
- * @param cmd string to parse
- * @return int number of args (words)
- */
-/*int get_arg_count (char *cmd[]) {
-
-    int out = 0;
-    for (int i = 0; i < sizeof(cmd); i++) {
-        if (cmd[i] == ' ') {
-            out++;
-        }
-    }
-
-    return out;
-}*/
-
-/**
- * @brief Dynamically reallocate the size of global var cmd_args
- * 
- * @param ct count of args
- */
-/*void realloc_cmd_args(int ct) {
-    free(cmd_args);
-    //realloc(cmd_args, ct * sizeof(cmd_args));
-}*/
-
-
-/**
  * @brief Allocate memory block to store user input as string. If user exceeds it (somehow), then reallocate memory to fit.
  * Trims newline characters. cmdops_split_line will be run in tandem with this function and will split the line into tokens
  * using ' ' as a delimiter.

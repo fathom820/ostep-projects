@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ostep_projects"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ostep_projects">
+				<Option output="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug/ostep_projects" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-mapreduce"/>
+					<Add directory="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src"/>
+					<Add directory="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/filesystems-distributed"/>
+					<Add directory="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 ostep_projects"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ostep_projects/fast">
+				<Option output="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug/ostep_projects" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-mapreduce"/>
+					<Add directory="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src"/>
+					<Add directory="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/filesystems-distributed"/>
+					<Add directory="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 ostep_projects/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/c/Users/micha/Documents/Ship/2022\ S/CMPE\ 320/ostep-projects/ostep-projects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-mapreduce/mapreduce.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/io_helper.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/io_helper.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/request.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/request.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/spin.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/wclient.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/concurrency-webserver/src/wserver.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/filesystems-distributed/mfs.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/test_1.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/initial-xv6/tests/test_2.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/builtins.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/builtins.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/cmdops.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/cmdops.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/error.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/error.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/main.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/paths.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/paths.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/redirect.c">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/processes-shell/redirect.h">
+			<Option target="ostep_projects"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

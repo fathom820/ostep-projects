@@ -19,9 +19,6 @@ char *output_file;
 
 
 int main (int argc, char *argv[]) {
-    //char *default_path[256] = {"/bin"};
-    //char default_path_len = 1;
-    //paths_set(default_path, default_path_len);
     // runs batch mode (! tests use this mode !)
     if (argc == 2) {
         FILE *fp = fopen(argv[1], "r"); 
@@ -36,12 +33,13 @@ int main (int argc, char *argv[]) {
         size_t read;
 
         while ((read = getline(&line, &len, fp)) != -1) {
-            line[strcspn(line, "\r\n")] = 0; // remove newline
+            line[strcspn(line, "\r\n")] = 0; // remove newline (better safe than sorry)
             
             char **temp = cmdops_get_redirect(line);
+            
             cmd_args = cmdops_split_line(temp[0]);
             
-
+            
             output_file = temp[1];
             
             FILE *op = fopen(output_file, "w+");
@@ -55,15 +53,10 @@ int main (int argc, char *argv[]) {
                 //dup2(out, 1);
                 //close(out);
             }
-            
-
-
-            //char *cmd = cmd_args[0];
-            printf("%d",cmd_args_len);
-            if (!builtins_run(cmd_args)) {
-                if(!paths_run(cmd_args)) {
-                    cmd_error("An error has occurred\n");
-                }
+       
+            // if a command was issued & wasn't a built in command or found in path, throw error
+            if (cmd_args_len > 0 && !builtins_run(cmd_args) && !paths_run(cmd_args)) {
+                cmd_error();
             }
         }
 
@@ -74,13 +67,15 @@ int main (int argc, char *argv[]) {
         return 0;
 
     }
+
     // runs interactive mode 
     else if (argc == 1) {
-        // todo
+        // TODO: interactivem ode
     }
+
     // if too many arguments
     else {
-        cmd_error("An error has occurred\n");
+        cmd_error();
         exit(1);
     }
 }

@@ -12,16 +12,24 @@ extern char *path;
 extern int cmd_args_len;
 
 int builtins_run(char **args) {
-    printf("test");
-    int found = 0;
-
+    if (args == NULL) {
+        printf("nigga");
+    }
     char *cmd = args[0];
-    cmd[strcspn(cmd, "\r\n")] = 0;  // remove newline chars for both DOS and UNIX formats, since WSL likes to cause problems :/
+    
 
+    if (cmd == NULL) {
+        printf("no cmd");
+        return 0;
+    }
+    int found = 0;
+    
+    //cmd[strcspn(cmd, "\r\n")] = 0;  // remove newline chars for both DOS and UNIX formats, since WSL likes to cause problems :/
+    
     if (strcmp(cmd, "exit") == 0) {
         found = 1;
         if (args[1] != NULL) { // can't have any arguments, exit is a standalone command
-            cmd_error("An error has occurred\n");
+            cmd_error();
         } else {
             exit(EXIT_SUCCESS);
         }
@@ -30,7 +38,7 @@ int builtins_run(char **args) {
         found = 1;
         // if no arguments
         if (args[1] == NULL) {
-            cmd_error("An error has occurred\n");
+            cmd_error();
         }
         
         // if 1 argument (proper case)
@@ -40,7 +48,7 @@ int builtins_run(char **args) {
 
         // 2 or more arguments
         if (args[2] != NULL) {
-            cmd_error("An error has occurred\n");
+            cmd_error();
         }
     }
     if (strcmp(cmd, "path") == 0) {

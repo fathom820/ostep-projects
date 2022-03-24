@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "error.h"
 
-void cmd_error(char *msg) {
-  fprintf(stderr, "%s", msg);
-  //exit(0); // causes test 7 to break, might need to be brought back at a later point
+void cmd_error() {
+  fprintf(stderr, "%s\n", "An error has occurred");
 }
