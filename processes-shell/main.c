@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "cmdops.h" // command operations
 #include "builtins.h" // builtin commands
@@ -22,8 +27,8 @@ int main (int argc, char *argv[]) {
         FILE *fp = fopen(argv[1], "r"); 
 
         if (fp == NULL) {
-            perror("fopen");
-            return 1;
+            cmd_error("An error has occurred\n");
+            exit(1);
         }
 
         char *line = NULL;
@@ -36,9 +41,25 @@ int main (int argc, char *argv[]) {
             char **temp = cmdops_get_redirect(line);
             cmd_args = cmdops_split_line(temp[0]);
             
+
             output_file = temp[1];
-            char *cmd = cmd_args[0];
             
+            FILE *op = fopen(output_file, "w+");
+            
+            
+            if (op) {
+                fclose(op);
+                //printf("test");
+                //int out = open(output_file, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                //printf("%d\n", out);
+                //dup2(out, 1);
+                //close(out);
+            }
+            
+
+
+            //char *cmd = cmd_args[0];
+            printf("%d",cmd_args_len);
             if (!builtins_run(cmd_args)) {
                 if(!paths_run(cmd_args)) {
                     cmd_error("An error has occurred\n");
@@ -59,6 +80,7 @@ int main (int argc, char *argv[]) {
     }
     // if too many arguments
     else {
-        puts("Max arguments: 1");
+        cmd_error("An error has occurred\n");
+        exit(1);
     }
 }

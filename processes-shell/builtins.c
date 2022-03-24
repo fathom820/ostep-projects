@@ -12,6 +12,7 @@ extern char *path;
 extern int cmd_args_len;
 
 int builtins_run(char **args) {
+    printf("test");
     int found = 0;
 
     char *cmd = args[0];
@@ -24,7 +25,6 @@ int builtins_run(char **args) {
         } else {
             exit(EXIT_SUCCESS);
         }
-        //printf("builtins.c[19] : this shouldn't print\n"); // Why did I need to write this? it's a long story...
     }
     if (strcmp(cmd, "cd") == 0) {
         found = 1;
@@ -40,7 +40,6 @@ int builtins_run(char **args) {
 
         // 2 or more arguments
         if (args[2] != NULL) {
-            //printf(args[2]);
             cmd_error("An error has occurred\n");
         }
     }
@@ -50,7 +49,6 @@ int builtins_run(char **args) {
 
         for (int i = 1; i < cmd_args_len; i++) {
             temp[i-1] = args[i];
-            //printf("%s\n", temp[0]);
         }
         paths_set(temp, cmd_args_len - 1);
     }

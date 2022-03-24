@@ -7,6 +7,7 @@
 
 #include "paths.h"
 #include "cmdops.h"
+#include "redirect.h"
 
 
 char cwd[PATH_MAX];
@@ -56,8 +57,8 @@ int paths_run(char **args) {
             int pid = fork();
 
             if (pid == 0) {
+                //redirect_verify();
                 execv(full, args);
-                printf("this shouldn't print\n");
                 perror("execv");
             }
         }

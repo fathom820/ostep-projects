@@ -86,13 +86,42 @@ char **cmdops_get_redirect(char *line) {
     char **out = malloc(2 * sizeof(char*)); // 2 element array
     int bufsize = BUFSIZE;
     int pos = 0;
+    int redir_count = 0;
+
+    for (int i = 0; i < strlen(line); i++) {
+        if (line[i] == '>') {
+            redir_count++;
+            break;
+        }
+    }
 
     out[0] = strtok(line, ">");
     //printf(out[0]);
     out[1] = strtok(NULL, ">");
-    //printf(out[1]);
 
+    // check if redirection requested, but no file specified
+    if (out[1] == NULL && redir_count == 1) {
+        cmd_error("An error has occurred\n");
+        exit(0);
+    } else if (out[1] != NULL && redir_count == 1) {
 
+        // check for multiple output files
+        for (int i = 0; i < strlen(out[1]); i++) {
+            if (out[1][i] == ' ') {
+                cmd_error("An error has occurred\n");
+                exit(0);
+            }
+        }
+
+        FILE *fp = fopen(out[1], "w+");
+
+        if (!fp) {
+            printf("failed lol");
+        } else {
+            
+        }
+    }
+    
     return out;
 }
 
