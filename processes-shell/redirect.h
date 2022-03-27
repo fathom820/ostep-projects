@@ -1,1 +1,0 @@
-void redirect_verify();

@@ -53,9 +53,9 @@ char *cmdops_read_line(char line[]) {
     }
 }
 
-char **cmdops_get_redirect(char *line) {
-    // line is modified
-    char **out = malloc(2 * sizeof(char*)); // 2 element array
+char **cmdops_get_redirect(char *line) {                // note that *line is modified by this function
+
+    char **out = malloc(2 * sizeof(char*));             // 2 element array
     int bufsize = BUFSIZE;
     int pos = 0;
     int redir_count = 0;
@@ -68,17 +68,16 @@ char **cmdops_get_redirect(char *line) {
     }
 
     out[0] = strtok(line, ">");
-    //printf(out[0]);
     out[1] = strtok(NULL, ">");
 
-    // check if redirection requested, but no file specified
-    if (out[1] == NULL && redir_count == 1) {
+    if (out[1] == NULL && redir_count == 1) {           // check if redirection requested, but no file specified
+
         error("An error has occurred\n");
         exit(0);
     } else if (out[1] != NULL && redir_count == 1) {
 
-        // check for multiple output files
-        for (int i = 0; i < strlen(out[1]); i++) {
+        for (int i = 0; i < strlen(out[1]); i++) {      // check for multiple output files
+
             if (out[1][i] == ' ') {
                 error("An error has occurred\n");
                 exit(0);
@@ -88,9 +87,7 @@ char **cmdops_get_redirect(char *line) {
         FILE *fp = fopen(out[1], "w+");
 
         if (!fp) {
-            printf("failed lol");
-        } else {
-            
+            printf("%s\n", "cmd_ops_get_redirect : fucked up");
         }
     }
     
@@ -139,6 +136,7 @@ char **cmdops_split(char *line, char *delim) {
 
         token = strtok(NULL, delim);
     }
+    
     tokens[pos] = NULL;
     return tokens;
 }

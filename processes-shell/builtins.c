@@ -11,24 +11,22 @@
 extern char *path;
 extern int cmd_args_len;
 
-int builtins_run(char **args) {
-    if (args == NULL) {
-        printf("nigga");
-    }
-    char *cmd = args[0];
-    
 
+int builtins_run(char **args) {
+    int found = 0;
+
+    if (args == NULL) {
+        puts("If you can see this, it means the programmer really fucked up.");
+    }
+    
+    char *cmd = args[0];
     if (cmd == NULL) {
         printf("no cmd");
-        return 0;
+        return found;
     }
-    int found = 0;
-    
-    //cmd[strcspn(cmd, "\r\n")] = 0;  // remove newline chars for both DOS and UNIX formats, since WSL likes to cause problems :()
-    
     if (strcmp(cmd, "exit") == 0) {
         found = 1;
-        if (args[1] != NULL) { // can't have any arguments, exit is a standalone command
+        if (args[1] != NULL) {      // can't have any arguments, exit is a standalone command
             error();
         } else {
             exit(0);
@@ -36,18 +34,14 @@ int builtins_run(char **args) {
     }
     if (strcmp(cmd, "cd") == 0) {
         found = 1;
-        // if no arguments
-        if (args[1] == NULL) {
+        
+        if (args[1] == NULL) {      // if no arguments
             error();
         }
-        
-        // if 1 argument (proper case)
-        if (args[1] != NULL) {
+        if (args[1] != NULL) {      // if 1 argument (proper case)
             chdir(args[1]);
         }
-
-        // 2 or more arguments
-        if (args[2] != NULL) {
+        if (args[2] != NULL) {      // 2 or more arguments
             error();
         }
     }
@@ -60,5 +54,6 @@ int builtins_run(char **args) {
         }
         paths_set(temp, cmd_args_len - 1);
     }
+    
     return found;
 }
