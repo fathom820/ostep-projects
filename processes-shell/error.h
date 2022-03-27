@@ -1,1 +1,1 @@
-void cmd_error ();
+void error ();

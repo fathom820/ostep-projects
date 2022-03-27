@@ -72,14 +72,14 @@ char **cmdops_get_redirect(char *line) {
 
     // check if redirection requested, but no file specified
     if (out[1] == NULL && redir_count == 1) {
-        cmd_error("An error has occurred\n");
+        error("An error has occurred\n");
         exit(0);
     } else if (out[1] != NULL && redir_count == 1) {
 
         // check for multiple output files
         for (int i = 0; i < strlen(out[1]); i++) {
             if (out[1][i] == ' ') {
-                cmd_error("An error has occurred\n");
+                error("An error has occurred\n");
                 exit(0);
             }
         }
@@ -96,7 +96,16 @@ char **cmdops_get_redirect(char *line) {
     return out;
 }
 
-char **cmdops_split_line(char *line) {
+/**
+ * @brief Basically a strtok() wrapper. Splits a given string into an array of strings,
+ * separated by each occurence of *delim.
+ * 
+ * @param line line to split
+ * @param delim character to split line by
+ * @param count number of 
+ * @return char** array of strings
+ */
+char **cmdops_split(char *line, char *delim) {
     cmd_args_len = 0;
     int bufsize = BUFSIZE;
     int pos = 0;
@@ -105,11 +114,12 @@ char **cmdops_split_line(char *line) {
     char *token;
 
     if (!tokens) {
-        fprintf(stderr, "cmdops_split_line: allocation error 1\n");
+        fprintf(stderr, "cmdops_split: allocation error 1\n");
         exit(EXIT_FAILURE);
     }
     
-    token = strtok(line, " ");
+    token = strtok(line, delim);
+    
     while (token != NULL) {
         tokens[pos] = token;
         pos++;
@@ -121,12 +131,12 @@ char **cmdops_split_line(char *line) {
             tokens = realloc(tokens, bufsize * sizeof(char*));
 
             if (!tokens) {
-                fprintf(stderr, "cmdops_split_line: allocation error 2\n");
+                fprintf(stderr, "cmdops_split: allocation error 2\n");
                 exit(EXIT_FAILURE);
             }
         }
 
-        token = strtok(NULL, " ");
+        token = strtok(NULL, delim);
     }
     tokens[pos] = NULL;
     return tokens;

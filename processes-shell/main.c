@@ -15,7 +15,7 @@
 char **cmd_args;
 int cmd_args_len;
 
-char *output_file;
+//char *output_file;
 
 
 int main (int argc, char *argv[]) {
@@ -24,7 +24,7 @@ int main (int argc, char *argv[]) {
         FILE *fp = fopen(argv[1], "r"); 
 
         if (fp == NULL) {
-            cmd_error("An error has occurred\n");
+            error("An error has occurred\n");
             exit(1);
         }
 
@@ -35,28 +35,35 @@ int main (int argc, char *argv[]) {
         while ((read = getline(&line, &len, fp)) != -1) {
             line[strcspn(line, "\r\n")] = 0; // remove newline (better safe than sorry)
             
-            char **temp = cmdops_get_redirect(line);
+            char **commands = cmdops_split(line, "&");
+            // test 16
             
-            cmd_args = cmdops_split_line(temp[0]);
-            
-            
-            output_file = temp[1];
-            
-            FILE *op = fopen(output_file, "w+");
-            
-            
-            if (op) {
-                fclose(op);
-                //printf("test");
-                //int out = open(output_file, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
-                //printf("%d\n", out);
-                //dup2(out, 1);
-                //close(out);
-            }
-       
-            // if a command was issued & wasn't a built in command or found in path, throw error
-            if (cmd_args_len > 0 && !builtins_run(cmd_args) && !paths_run(cmd_args)) {
-                cmd_error();
+
+            // for each command in line
+            int i = 0;
+            while (commands[i] != NULL) {
+
+                char *command = commands[i];
+                char **temp = cmdops_get_redirect(command);
+                
+                char **cmd_args = cmdops_split(temp[0], " ");
+                char *output_file = temp[1];
+
+                FILE *op = fopen(output_file, "w+");
+                if (op) {
+                    fclose(op);
+                    //printf("test");
+                    //int out = open(output_file, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                    //printf("%d\n", out);
+                    //dup2(out, 1);
+                    //close(out);
+                }
+
+                //printf("%d\n", cmd_args_len);
+                if (cmd_args_len > 0 && !builtins_run(cmd_args) && !paths_run(cmd_args)) {
+                    error();
+                }
+                i++;
             }
         }
 
@@ -65,17 +72,16 @@ int main (int argc, char *argv[]) {
             free(line);
         }
         return 0;
-
     }
 
     // runs interactive mode 
     else if (argc == 1) {
-        // TODO: interactivem ode
+        // TODO: interactive mode
     }
 
     // if too many arguments
     else {
-        cmd_error();
+        error();
         exit(1);
     }
 }
