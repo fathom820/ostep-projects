@@ -44,10 +44,12 @@ int main (int argc, char *argv[]) {
             while (commands[i] != NULL) {
 
                 char *command = commands[i];
+                //printf("%s\n", command);
                 char **temp = cmdops_get_redirect(command);
                 
                 char **cmd_args = cmdops_split(temp[0], " ");
                 char *output_file = temp[1];
+                //printf(output_file);
 
                 FILE *op = fopen(output_file, "w+");
                 if (op) {
@@ -63,6 +65,7 @@ int main (int argc, char *argv[]) {
                 if (cmd_args_len > 0 && !builtins_run(cmd_args) && !paths_run(cmd_args)) {
                     error();
                 }
+              //  printf(command);
                 i++;
             }
         }

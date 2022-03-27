@@ -36,7 +36,7 @@ int paths_run(char **args) {
 
     while(found == 0 && i < path_len) {
         
-        char full[2048];
+        char full[2048]; // I commend anyone who is able to type in a command over 2048 characters.
         strcpy(full, path[i]);
         strcat(full, "/");
         strcat(full, args[0]);
@@ -49,7 +49,9 @@ int paths_run(char **args) {
                 //TODO: redirect_verify();
                 execv(full, args);
                 perror("execv");
-            }
+            } else {
+                pid = wait(NULL);
+            }   
         }
         i++;
     }
