@@ -23,7 +23,7 @@ int main (int argc, char *argv[]) {
         FILE *fp = fopen(argv[1], "r"); 
 
         if (fp == NULL) {
-            error("An error has occurred\n");
+            error();
             exit(1);
         }
 
@@ -37,12 +37,14 @@ int main (int argc, char *argv[]) {
             char **commands = cmdops_split(line, "&");  // if more than one cmd per line, split them into array
 
             int i = 0;
+            
             while (commands[i] != NULL) {
                 char *command = commands[i];
+                //printf("%s\n", commands[1]);
                 char **temp = cmdops_get_redirect(command);
                 char **cmd_args = cmdops_split(temp[0], " ");
                 char *output_file = temp[1];
-
+                
                 FILE *op = fopen(output_file, "w+");
                 if (op) {
                     fclose(op);

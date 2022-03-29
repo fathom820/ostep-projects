@@ -11,10 +11,21 @@
 
 extern int cmd_args_len;
 
+void remove_spaces(char *s) {
+    char *d = s;
+    do {
+        while (*d == ' ') {
+            ++d;
+        }
+    } while (*s++ = *d++);
+}
+
 /**
- * @brief Allocate memory block to store user input as string. If user exceeds it (somehow), then reallocate memory to fit.
- * Trims newline characters. cmdops_split_line will be run in tandem with this function and will split the line into tokens
- * using ' ' as a delimiter.
+ * @brief Allocate memory block to store user input as string. 
+ * If user exceeds it (somehow), then reallocate memory to fit.
+ * Trims newline characters. cmdops_split will be run in tandem with this 
+ * function and will split the line into tokens
+ * using " " as a delimiter.
  * 
  * @param line line to read
  * @return char* 
@@ -63,31 +74,42 @@ char **cmdops_get_redirect(char *line) {                // note that *line is mo
     for (int i = 0; i < strlen(line); i++) {
         if (line[i] == '>') {
             redir_count++;
-            break;
         }
+    }
+    //printf("%s %d\n\n", line, redir_count);
+
+    if (redir_count > 1) {
+        error();
+        exit(0);
     }
 
     out[0] = strtok(line, ">");
-    out[1] = strtok(NULL, ">");
-
-    if (out[1] == NULL && redir_count == 1) {           // check if redirection requested, but no file specified
-
-        error("An error has occurred\n");
+    char *redir = out[1] = strtok(NULL, ">");
+    redir = strtok(redir, " ");
+    char *second = strtok(NULL, " ");
+    if (second != NULL) {
+        error();
         exit(0);
-    } else if (out[1] != NULL && redir_count == 1) {
+    }
+    
 
-        for (int i = 0; i < strlen(out[1]); i++) {      // check for multiple output files
 
-            if (out[1][i] == ' ') {
-                error("An error has occurred\n");
-                exit(0);
+    if (redir == NULL && redir_count == 1) {         
+        error();
+        exit(0);
+    } else if (redir != NULL && redir_count == 1) {
+
+        for (int i = 0; i < strlen(redir); i++) {      // check for multiple output files
+
+            if (redir[i] == ' ') {
+                remove_spaces(redir);
             }
         }
-
-        FILE *fp = fopen(out[1], "w+");
+        
+        FILE *fp = fopen(redir, "w+");
 
         if (!fp) {
-            printf("%s\n", "cmd_ops_get_redirect : fucked up");
+            printf("%s%s%s\n", "oops", redir, "oops");
         }
     }
     
@@ -96,7 +118,8 @@ char **cmdops_get_redirect(char *line) {                // note that *line is mo
 
 /**
  * @brief Basically a strtok() wrapper. Splits a given string into an array of strings,
- * separated by each occurence of *delim.
+ * separated by each occurence of *delim. Kind of the most important function in the whole program.
+ * If there's a bug, 70% chance its happening here.
  * 
  * @param line line to split
  * @param delim character to split line by
