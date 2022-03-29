@@ -64,6 +64,12 @@ char *cmdops_read_line(char line[]) {
     }
 }
 
+/**
+ * @brief It works. Don't touch it.
+ * 
+ * @param line line to get redirection from
+ * @return char** line split into format {command, redirection}
+ */
 char **cmdops_get_redirect(char *line) {                // note that *line is modified by this function
 
     char **out = malloc(2 * sizeof(char*));             // 2 element array
