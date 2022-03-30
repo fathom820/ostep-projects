@@ -61,8 +61,8 @@ void client_print(int fd) {
     // Read and display the HTTP Body 
     n = read_or_die(fd, buf, MAXBUF);
     while (n > 0) {
-	printf("%s", buf);
-	n = read_or_die(fd, buf, MAXBUF);
+        printf("%s", buf);
+        n = read_or_die(fd, buf, MAXBUF);
     }
 }
 
