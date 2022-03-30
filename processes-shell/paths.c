@@ -3,6 +3,7 @@
 #include <linux/limits.h>   // PATH_MAX
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <stdio.h>
 
 #include "paths.h"
@@ -11,6 +12,7 @@
 
 char path[256][256] = {"/bin"};
 int path_len = 1;
+int children;
 
 
 void paths_set(char *newpath[256], int len) {
@@ -39,11 +41,10 @@ int paths_run(char **args) {
 
             int pid = fork();
             if (pid == 0) {
-                //TODO: redirect_verify();
                 execv(full, args);
                 perror("execv");
             } else {
-                pid = wait(NULL);
+                //pid = wait(NULL);
             }   
         }
         i++;

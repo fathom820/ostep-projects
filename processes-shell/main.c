@@ -15,6 +15,7 @@
 
 char **cmd_args;
 int cmd_args_len;
+extern int children;
 
 
 int main (int argc, char *argv[]) {
@@ -40,7 +41,7 @@ int main (int argc, char *argv[]) {
             
             while (commands[i] != NULL) {
                 char *command = commands[i];
-                //printf("%s\n", commands[1]);
+              //  printf("%s\n", command);
                 char **temp = cmdops_get_redirect(command);
                 char **cmd_args = cmdops_split(temp[0], " ");
                 char *output_file = temp[1];
@@ -48,11 +49,13 @@ int main (int argc, char *argv[]) {
                 FILE *op = fopen(output_file, "w+");
                 if (op) {
                     fclose(op);
-                    //printf("test");
-                    //int out = open(output_file, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
-                    //printf("%d\n", out);
-                    //dup2(out, 1);
-                    //close(out);
+                    /*
+                    printf("test");
+                    int out = open(output_file, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                    printf("%d\n", out);
+                    dup2(out, 1);
+                    close(out);
+                    */
                 }
 
                 if (cmd_args_len > 0 && !builtins_run(cmd_args) && !paths_run(cmd_args)) {
@@ -60,6 +63,13 @@ int main (int argc, char *argv[]) {
                 }
                 i++;
             }
+        }
+        
+        int status;
+        pid_t pid;
+        while (children > 0) {
+            pid = wait(&status);
+            --children;
         }
 
         fclose(fp);
