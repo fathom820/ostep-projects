@@ -53,18 +53,15 @@ int paths_run(char **args) {
 
             if (pid == 0) {
                 op = fopen(output_file, "w");
+
                 if (op) {
-                    printf("test\n");
-                    freopen(output_file, "w", stdout); 
-                } else {
+                    
                 }
 
                 execv(full, args);
                 perror("execv");
             } else {
                 children++;
-                                    printf("%s %s: %s\n", args[0], args[1], output_file);
-
             }   
         }
         i++;
