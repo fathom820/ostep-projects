@@ -13,13 +13,22 @@
 char path[256][256] = {"/bin"};
 int path_len = 1;
 int children;
-
+int pids[256];
+char *output_file;
 
 void paths_set(char *newpath[256], int len) {
     for (int i = 0; i < len; i++) {
         strcpy(path[i], newpath[i]);
     }
     path_len = len;
+}
+
+void clean_stdin(void)
+{
+    int c;
+    do {
+        c = getchar();
+    } while (c != '\n' && c != EOF);
 }
 
 int paths_run(char **args) {
@@ -31,20 +40,31 @@ int paths_run(char **args) {
 
     int i = 0;
     while(found == 0 && i < path_len) {
-        char full[2048];                // I commend anyone who is able to type in a command that's over 2048 characters long.
+        char full[256];                // I commend anyone who is able to type in a command that's over 256 characters long.
         strcpy(full, path[i]);
         strcat(full, "/");
         strcat(full, args[0]);
 
         if (access(full, R_OK) == 0) {
             found = 1;
+            FILE *o, *op;
 
             int pid = fork();
+
             if (pid == 0) {
+                op = fopen(output_file, "w");
+                if (op) {
+                    printf("test\n");
+                    freopen(output_file, "w", stdout); 
+                } else {
+                }
+
                 execv(full, args);
                 perror("execv");
             } else {
-                //pid = wait(NULL);
+                children++;
+                                    printf("%s %s: %s\n", args[0], args[1], output_file);
+
             }   
         }
         i++;

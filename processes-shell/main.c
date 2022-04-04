@@ -6,16 +6,20 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "cmdops.h"     // command operations
-#include "builtins.h"   // builtin commands
-#include "paths.h"      // attack on titan reference lol
+#include "builtins.h"   // built-in commands
+#include "paths.h"      // path stuff
 #include "error.h"      // error()
 
 
 char **cmd_args;
 int cmd_args_len;
 extern int children;
+extern int pids[256];
+extern char *output_file;
 
 
 int main (int argc, char *argv[]) {
@@ -38,39 +42,27 @@ int main (int argc, char *argv[]) {
             char **commands = cmdops_split(line, "&");  // if more than one cmd per line, split them into array
 
             int i = 0;
+            children = 0;
             
             while (commands[i] != NULL) {
                 char *command = commands[i];
-              //  printf("%s\n", command);
                 char **temp = cmdops_get_redirect(command);
                 char **cmd_args = cmdops_split(temp[0], " ");
-                char *output_file = temp[1];
-                
-                FILE *op = fopen(output_file, "w+");
-                if (op) {
-                    fclose(op);
-                    /*
-                    printf("test");
-                    int out = open(output_file, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
-                    printf("%d\n", out);
-                    dup2(out, 1);
-                    close(out);
-                    */
-                }
+                output_file = temp[1];
+
 
                 if (cmd_args_len > 0 && !builtins_run(cmd_args) && !paths_run(cmd_args)) {
                     error();
                 }
                 i++;
             }
+
+            for (int p = 0; p < children; p++) {
+                wait(NULL);
+            }
         }
-        
-        int status;
-        pid_t pid;
-        while (children > 0) {
-            pid = wait(&status);
-            --children;
-        }
+
+
 
         fclose(fp);
         if(line) {
