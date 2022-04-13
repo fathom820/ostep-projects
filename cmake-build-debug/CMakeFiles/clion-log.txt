@@ -1,4 +1,15 @@
 C:\Windows\system32\wsl.exe --distribution Ubuntu-18.04 --exec /bin/sh -c "export CLION_IDE=TRUE && export JETBRAINS_IDE=TRUE && cd '/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug' && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles' '/mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects'"
 -- Configuring done
+CMake Error at CMakeLists.txt:11 (add_executable):
+  Cannot find source file:
+
+    processes-shell/redirect.c
+
+  Tried extensions .c .C .c++ .cc .cpp .cxx .m .M .mm .h .hh .h++ .hm .hpp
+  .hxx .in .txx
+
+
+CMake Error: CMake can not determine linker language for target: ostep_projects
+CMake Error: Cannot determine link language for target "ostep_projects".
 -- Generating done
 -- Build files have been written to: /mnt/c/Users/micha/Documents/Ship/2022 S/CMPE 320/ostep-projects/ostep-projects/cmake-build-debug
