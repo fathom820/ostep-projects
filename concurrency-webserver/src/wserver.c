@@ -1,15 +1,28 @@
 #include <stdio.h>
+<<<<<<< HEAD
 #include <pthread.h>
+=======
+#include <getopt.h>
+#include <pthread.h>
+
+>>>>>>> ac456148194f12f17532b2062015a7ebf020bb9a
 #include "request.h"
 #include "io_helper.h"
 
 char default_root[] = ".";
 
+<<<<<<< HEAD
 void *mythread(int fd) {
     printf("opening thread\n");
     request_handle(fd);
     close_or_die(fd);
     return NULL;
+=======
+void *handle(int fd) {
+	request_handle(fd);
+	printf("child: done\n");
+	return NULL;
+>>>>>>> ac456148194f12f17532b2062015a7ebf020bb9a
 }
 
 //
@@ -23,6 +36,7 @@ int main(int argc, char *argv[]) {
     int buffers     = 1;
     char * schedalg = "FIFO";
     
+<<<<<<< HEAD
     while ((c = getopt(argc, argv, "d:p:t:b:s:")) != -1)
         switch (c) {
         case 'd':
@@ -54,6 +68,20 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "usage: wserver [-d basedir] [-p port] [-t threads] [-b buffers] [-s scheduling algorithm]\n");
             exit(1);
         }
+=======
+    while ((c = getopt(argc, argv, "d:p:")) != -1)
+	switch (c) {
+	case 'd':
+	    root_dir = optarg;
+	    break;
+	case 'p':
+	    port = atoi(optarg);
+	    break;
+	default:
+	    fprintf(stderr, "usage: wserver [-d basedir] [-p port]\n");
+	    exit(1);
+	}
+>>>>>>> ac456148194f12f17532b2062015a7ebf020bb9a
 
     //printf("d: %s, p: %d, t: %d, b: %d, s: %s", root_dir, port, threads, buffers, schedalg);
     // run out of this directory
@@ -63,6 +91,7 @@ int main(int argc, char *argv[]) {
     int listen_fd = open_listen_fd_or_die(port);
 
     while (1) {
+<<<<<<< HEAD
         pthread_t p1;
 
         struct sockaddr_in client_addr;
@@ -74,6 +103,13 @@ int main(int argc, char *argv[]) {
         } else {
             printf("Thread success\n");
         }
+=======
+	struct sockaddr_in client_addr;
+	int client_len = sizeof(client_addr);
+	int conn_fd = accept_or_die(listen_fd, (sockaddr_t *) &client_addr, (socklen_t *) &client_len);
+	close_or_die(conn_fd);
+	//TODO: create thread
+>>>>>>> ac456148194f12f17532b2062015a7ebf020bb9a
     }
     return 0;
 }

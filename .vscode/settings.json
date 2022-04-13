@@ -3,5 +3,11 @@
         "stdlib.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled",
+<<<<<<< HEAD
     "cmake.configureOnOpen": false
+=======
+    
+    "editor.formatOnSave": true
+    
+>>>>>>> ac456148194f12f17532b2062015a7ebf020bb9a
 }
