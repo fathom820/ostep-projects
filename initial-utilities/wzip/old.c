@@ -29,7 +29,7 @@ int main (int argc, char *argv[]){
                 printf("%c", end);
                 end = c;
                 char_count = 2;
-            }
+            }     
         }  
         fclose(fp); 
     }
