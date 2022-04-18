@@ -1,0 +1,5 @@
+#!/bin/bash
+cd src
+gcc $1 -pthread # compile
+./a.out # run
+rm -f a.out # clean
