@@ -1,2 +1,2 @@
 wzip:
-	gcc -o wzip wzip.c -Wall -Werror
+	gcc -o wzip wzip.c
