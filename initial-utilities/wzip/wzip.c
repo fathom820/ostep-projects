@@ -13,6 +13,11 @@ void write_(int count, char last) {
   printf("%c", last);                     // write char to file
 }
 
+typedef struct __arg {
+  struct arg_val_t arg_val; // information passed to the thread
+  struct ret_val_t ret_val; // information bassed back (returned) to "main "thread
+} arg_t;
+
 int main (int argc, char *argv[]) {
   if (argc == 1) {
     printf("wzip: file1 [file2 ...]\n");
@@ -79,22 +84,20 @@ int main (int argc, char *argv[]) {
 
     } else { // ! p2s2 compression (multi-threaded)
       // TODO: shit here
-      int fd = fileno(fp); // convert FILE struct to file descriptor (thanks POSIX!)
+      int fd = fileno(fp);      // convert FILE struct to file descriptor (thanks POSIX!)
       char *src = mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
-      // printf("%ld\n", strlen(src));
-      int off1 = file_size / 3;
-      int off2 = off1 * 2;
-      // printf("%d %d\n", off1, off2);
-      printf("%d, %d\n", file_size, off1 * 3);
+      int off1 = file_size / 3; // offset for second crawler
+      int off2 = off1 * 2;      // offset for third crawler
+
     }
   }
-  // the whole thing breaks if I change this and
+  // The whole thing breaks if I change this and
   // I'm not brave enough to try and figure out why.
   if (file_size <= 4096) write_(count, chr_last);
   return 0;
 }
 
-
+void crawl()
 
 
 // ! p2s1 main; i refactored everything for p2s2
