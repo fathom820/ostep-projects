@@ -16,6 +16,16 @@ void queue_init(queue_t *q) {
   printf("init q\n");
 }
 
+int queue_length(queue_t *q) {
+  int out = 1;
+  node_t *tmp = q -> head;
+  while(tmp -> next != NULL) {
+    tmp = tmp -> next;
+    out++;
+  }
+  return out;
+}
+
 void queue_enqueue(queue_t *q, int value) {
   node_t *tmp = malloc(sizeof(node_t));
   assert(tmp != NULL);
@@ -49,8 +59,8 @@ int queue_dequeue(queue_t *q, int *value) {
 // Returns 1 if queue empty 
 // Returns 0 if queue elements >= 1
 int queue_empty(queue_t *q) {
-  if (q->head == q->tail == NULL) {
-    return 1;
+  if (q->head == q->tail) {
+    if (q->head->next == NULL) return 1;
   }
   return 0;
 }
@@ -67,36 +77,36 @@ void *deq_f(void *a) {
   return NULL;
 }
 
-int main(int argc, char *argv[]) {
-  pthread_t p1, p2, p3, p4, p5;
-  queue_t queue;
-  queue_init(&queue);
+// int main(int argc, char *argv[]) {
+//   pthread_t p1, p2, p3, p4, p5;
+//   queue_t queue;
+//   queue_init(&queue);
 
-  enq_args p2_args = malloc(sizeof(*p2_args));
-  p2_args->q = &queue;
-  p2_args->value = 1;
+//   enq_args p2_args = malloc(sizeof(*p2_args));
+//   p2_args->q = &queue;
+//   p2_args->value = 1;
 
-  enq_args p3_args = malloc(sizeof(*p3_args));
-  p3_args->q = &queue;
-  p3_args->value = 2;
+//   enq_args p3_args = malloc(sizeof(*p3_args));
+//   p3_args->q = &queue;
+//   p3_args->value = 2;
 
-  int *val = 0;
-  deq_args p4_args = malloc(sizeof(*p4_args));
-  p4_args->q = &queue;
-  p4_args->value = val;
-  // printf("%d\n", p4_args->value);
+//   int *val = 0;
+//   deq_args p4_args = malloc(sizeof(*p4_args));
+//   p4_args->q = &queue;
+//   p4_args->value = val;
+//   // printf("%d\n", p4_args->value);
 
-  int *val_p4;
-  pthread_create(&p2, NULL, enq_f, p2_args);
-  pthread_create(&p3, NULL, enq_f, p3_args);
+//   int *val_p4;
+//   pthread_create(&p2, NULL, enq_f, p2_args);
+//   pthread_create(&p3, NULL, enq_f, p3_args);
 
-  pthread_join(p2, NULL);  
-  pthread_join(p3, NULL);
+//   pthread_join(p2, NULL);  
+//   pthread_join(p3, NULL);
 
-  pthread_create(&p4, NULL, deq_f, p4_args);
-  pthread_create(&p5, NULL, deq_f, p4_args);
+//   pthread_create(&p4, NULL, deq_f, p4_args);
+//   pthread_create(&p5, NULL, deq_f, p4_args);
 
-  printf("%d\n", get_nprocs());
-  pthread_join(p4, NULL);
-  pthread_join(p5, NULL);
-}
+//   printf("%d\n", get_nprocs());
+//   pthread_join(p4, NULL);
+//   pthread_join(p5, NULL);
+// }

@@ -8,6 +8,7 @@
 
 queue_t jobs;
 pthread_cond_t fill = PTHREAD_COND_INITIALIZER;
+pthread_cond_t notfull = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t m   = PTHREAD_MUTEX_INITIALIZER;
 
 void *worker(void *arg) {
@@ -20,6 +21,7 @@ void *worker(void *arg) {
     queue_dequeue(&jobs, &fd);
     pthread_mutex_unlock(&m);
 
+    printf("handling request %d\n", fd);
     request_handle(fd);
     close_or_die(fd);
   }

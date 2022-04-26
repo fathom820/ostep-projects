@@ -43,7 +43,7 @@ typedef struct sockaddr sockaddr_t;
 #define open_or_die(pathname, flags, mode) \
     ({ int rc = open(pathname, flags, mode); assert(rc >= 0); rc; })
 #define read_or_die(fd, buf, count) \
-    ({ ssize_t rc = read(fd, buf, count); printf("rc: %d\n", rc); assert(rc >= 0); rc; })
+    ({ ssize_t rc = read(fd, buf, count); assert(rc >= 0); rc; })
 #define write_or_die(fd, buf, count) \
     ({ ssize_t rc = write(fd, buf, count); assert(rc >= 0); rc; })
 #define lseek_or_die(fd, offset, whence) \
