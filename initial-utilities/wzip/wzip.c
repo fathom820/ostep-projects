@@ -3,20 +3,87 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include <pthread.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 
 
 // ! assumes file has already been opened
 void write_(int count, char last) {
-  fwrite(&count, sizeof(int), 1, stdout); // write 4-bit integer address to file
-  printf("%c", last);                     // write char to file
+  fwrite(&count, sizeof(int), 1, stdout); // write 4-bit integer address to stdout
+  printf("%c", last);                     // write char to stdout
 }
 
+char *add_nullterm(char *s, int sz) {
+  int new_sz = sz + 1;
+  char temp[new_sz];
+
+  for (int i = 0; i < sz; i++) {
+    temp[i] = s[i];
+  }
+  temp[sz] = '\0';
+
+  char *out = (char*)temp;
+  return out;
+}
+
+typedef struct __arg_val {
+  int start;  // index to start at
+  int end;    // index to end at
+  char *in;   // mmap
+} arg_val_t;
+
+typedef struct __ret_val {
+  char *out;
+} ret_val_t;
+
 typedef struct __arg {
-  struct arg_val_t arg_val; // information passed to the thread
-  struct ret_val_t ret_val; // information bassed back (returned) to "main "thread
+  arg_val_t arg_val; // passed to worker thread
+  ret_val_t ret_val; // passed back to main thread
 } arg_t;
+
+void *worker(void *arg) {
+  arg_t *newarg = (arg_t*) arg;
+  int start = newarg->arg_val.start;// printf("start: %d\n", start);
+  int end   = newarg->arg_val.end; //printf("end: %d\n", end);
+  char *in  = newarg->arg_val.in;
+  char *out = newarg->ret_val.out; //printf("out: %s\n", out);
+
+  int count = 0;
+  char chr_current;
+  char chr_last;
+
+  
+  for (int i = start; i < end; i++) {
+    // * special case for very first character
+    chr_current = in[i];
+
+    if (i == 0) {
+      chr_last = chr_current;
+      count = 1;
+    }
+    // * add to count of current character
+    else if (chr_last == chr_current) {
+      ++count;
+    }
+    // * if character changes, make it the new
+    // * character to be compared to the others
+    else {
+      //TODO: write
+
+      chr_last = chr_current;
+      count = 1;
+    }
+  }
+}
+
+// * initialize an argument struct to be passed to worker
+void arg_init(arg_t *arg, int start, int end, char *in, char *out) {
+  arg->arg_val.start  = start;  //printf("arg_init: %d\n", start);
+  arg->arg_val.end    = end;    //printf("arg_init: %d\n", end);
+  arg->arg_val.in     = in;     //printf("arg_init: %s\n", in);
+  arg->ret_val.out    = out;    //printf("arg_init: %s\n\n", out);
+}
 
 int main (int argc, char *argv[]) {
   if (argc == 1) {
@@ -51,7 +118,7 @@ int main (int argc, char *argv[]) {
     file_size = st.st_size;
 
     // * determine compression algorithm based on file size
-    if (file_size <= 4096) { // ! p2s1 compression (non-threaded)
+    if (file_size <= 0) { // ! p2s1 compression (non-threaded)
 
       while(1) {
         // * move to next char, exit at EOF
@@ -83,11 +150,45 @@ int main (int argc, char *argv[]) {
       fclose(fp);
 
     } else { // ! p2s2 compression (multi-threaded)
-      // TODO: shit here
-      int fd = fileno(fp);      // convert FILE struct to file descriptor (thanks POSIX!)
+      // * split file (mapped to memory) into three partitions
+      // * partitions are evenly sized
+      int fd = fileno(fp);            // convert FILE struct to file descriptor
       char *src = mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
-      int off1 = file_size / 3; // offset for second crawler
-      int off2 = off1 * 2;      // offset for third crawler
+      int part_size = file_size / 3;  // partition size
+                                      // first partition starts at src[0]
+      int off1 = file_size / 3;       // second partition starts at src[off1]
+      int off2 = off1 * 2;            // third partition starts at src[off2]
+
+      pthread_t t;
+
+      // * arg declaration
+      arg_t *arg1 = malloc(sizeof(*arg1)); 
+      arg_t *arg2 = malloc(sizeof(*arg2));
+      arg_t *arg3 = malloc(sizeof(*arg3));
+
+
+      // * arg initialization
+      // empty pointers 
+      // point to eventual string output 
+      // of each worker thread
+      // initialized to "null" to avoid segfaults
+      // whenever my code messes up (as it does)
+      char *arg1_out = "null";
+      char *arg2_out = "null";
+      char *arg3_out = "null";
+
+      // initialize arg structs for each function so that
+      // they can be passed through pthread_create()
+      arg_init(arg1, 0, off1, src, arg1_out); // init arg1
+      arg_init(arg2, off1, off2, src, arg2_out);
+      arg_init(arg3, off2, file_size, src, arg3_out);
+      
+      char *test = add_nullterm(src, file_size);
+      pthread_create(&t, NULL, worker, (void *) arg1); // first partition
+      pthread_create(&t, NULL, worker, (void *) arg2); // second partition
+      pthread_create(&t, NULL, worker, (void *) arg3); // third partition
+
+      pthread_join(t, NULL);
 
     }
   }
@@ -96,69 +197,3 @@ int main (int argc, char *argv[]) {
   if (file_size <= 4096) write_(count, chr_last);
   return 0;
 }
-
-void crawl()
-
-
-// ! p2s1 main; i refactored everything for p2s2
-// ! keeping this here for
-// int mainold (int argc, char *argv[]) {
-//   // needs at least 1 argument
-//   switch (argc) {
-//     case 1:
-//       printf("wzip: file1 [file2 ...]\n");
-//       exit(1);
-
-//     default:
-//       {   
-//         bool first = false;     // boolean to test if first byte has been read yet
-//         int count = 0;          // char counter
-//         char chr_current;       // current char in string, null term used as default value because it will never occur in file
-//         char chr_last;          // "current" char that is being counted -- is compared to chr_current
-
-//         for (int i = 1; i < argc; i++) {
-//           FILE *fp = fopen(argv[i], "r");
-
-//           if (!fp) {
-//             printf("wzip: unable to open file\n");
-//             exit(1);
-//           }
-
-//           while(1) {
-//             chr_current = fgetc(fp);
-
-//             // exit at end of file
-//             if (chr_current == EOF) {
-//               break;
-//             }
-
-//             // initial condition:
-//             // for the first character, there is 
-//             // no previous character to refer to,
-//             // we must handle it independently 
-//             if (!first) {
-//               chr_last = chr_current;
-//               count = 1;
-//               first = true;
-//             }
-
-//             // add to count of current character
-//             else if (chr_last == chr_current) {
-//               ++count;
-//             }
-
-//             // if character changes, make it the new
-//             // character to be compared to the others
-//             else {
-//               write_(count, chr_last);
-//               chr_last = chr_current;
-//               count = 1;
-//             }
-//           }
-//           fclose(fp);
-//         }
-//         write_(count, chr_last);
-//         return 0;
-//       }
-//   }
-// }

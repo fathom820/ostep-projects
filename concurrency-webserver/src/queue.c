@@ -7,6 +7,7 @@
 
 #define NUM_THREADS 5
 
+
 void queue_init(queue_t *q) {
   node_t *tmp = malloc(sizeof(node_t)); // create node
   tmp -> next = NULL;         // only node in array, doesn't point to anything
@@ -30,13 +31,13 @@ void queue_enqueue(queue_t *q, int value) {
   node_t *tmp = malloc(sizeof(node_t));
   assert(tmp != NULL);
   tmp -> value = value;
-  tmp -> next  = NULL; 
+  tmp -> next  = NULL;
 
   pthread_mutex_lock(&q -> tail_lock);
   q -> tail -> next = tmp;
   q -> tail = tmp;
   printf("enq %d\n", q->tail->value);
-  pthread_mutex_unlock(&q -> tail_lock);
+  pthread_mutex_unlock(&q->tail_lock);
 }
 
 int queue_dequeue(queue_t *q, int *value) {
