@@ -1,0 +1,8 @@
+worker:
+- take in last char of previous partition(prev_last) & (prev_ct) count as arg
+	- if prev_last is \0 then ignore (base case for first char of first partition)
+- if first of worker is same
+	- find its count and add it to prev_ct
+- print count of prev + prev
+
+Go up until last char, then pass

@@ -1,0 +1,35 @@
+  arg_t *newarg = (arg_t*) arg;
+  int start = newarg->arg_val.start;// printf("start: %d\n", start);
+  int end   = newarg->arg_val.end; //printf("end: %d\n", end);
+  char *in  = newarg->arg_val.in;
+  char *out = newarg->ret_val.out; //printf("out: %s\n", out);
+
+  int count = 0;
+  char chr_current;
+  char chr_last;
+
+  
+  for (int i = start; i < end; i++) {
+    // * special case for very first character
+    chr_current = in[i];
+
+    if (i == 0) {
+      chr_last = chr_current;
+      count = 1;
+    }
+    // * add to count of current character
+    else if (chr_last == chr_current) {
+      ++count;
+    }
+    // * if character changes, make it the new
+    // * character to be compared to the others
+    else {
+      //TODO: write
+      // fwrite(&count,sizeof(int), 1, stdout);
+      printf("%c", chr_last);
+
+      chr_last = chr_current;
+      count = 1;
+    }
+  }
+  printf("%c", chr_last);

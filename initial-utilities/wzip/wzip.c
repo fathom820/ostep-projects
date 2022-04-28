@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
+#define THRESHOLD 0 // when file bigger than this size, multithreading will be used
 
 // ! assumes file has already been opened
 void write_(int count, char last) {
@@ -14,17 +15,9 @@ void write_(int count, char last) {
   printf("%c", last);                     // write char to stdout
 }
 
-char *add_nullterm(char *s, int sz) {
-  int new_sz = sz + 1;
-  char temp[new_sz];
-
-  for (int i = 0; i < sz; i++) {
-    temp[i] = s[i];
-  }
-  temp[sz] = '\0';
-
-  char *out = (char*)temp;
-  return out;
+void output_add(char *s, int ct, char c) {
+  char temp[strlen(s) + sizeof(int) + sizeof(char)]; // allocate string size of s with room for another entry
+  // for ()
 }
 
 typedef struct __arg_val {
@@ -54,7 +47,7 @@ void *worker(void *arg) {
   char chr_last;
 
   
-  for (int i = start; i < end; i++) {
+  for (int i = start; i <= end; i++) {
     // * special case for very first character
     chr_current = in[i];
 
@@ -70,13 +63,21 @@ void *worker(void *arg) {
     // * character to be compared to the others
     else {
       //TODO: write
+      // fwrite(&count,sizeof(int), 1, stdout);
+      char str[100];
+      sprintf(str, "%ls", &count);
+      printf("%d", &count);
+      printf("%c", chr_last);
 
       chr_last = chr_current;
       count = 1;
     }
   }
+  printf("\n");
+  return NULL;
 }
 
+  
 // * initialize an argument struct to be passed to worker
 void arg_init(arg_t *arg, int start, int end, char *in, char *out) {
   arg->arg_val.start  = start;  //printf("arg_init: %d\n", start);
@@ -97,7 +98,6 @@ int main (int argc, char *argv[]) {
   int file_size;      // size of current file 
 
   // ? might need to refactor (move) this block 
-  // ? to lesser scope inside (file_size <= 4096)
   bool first_read = false; // if first byte has been read (special case)
   int count = 0;           // counter for chr_last
   char chr_current;        // current char being compared to chr_last
@@ -118,7 +118,7 @@ int main (int argc, char *argv[]) {
     file_size = st.st_size;
 
     // * determine compression algorithm based on file size
-    if (file_size <= 0) { // ! p2s1 compression (non-threaded)
+    if (file_size <= THRESHOLD) { // ! p2s1 compression (non-threaded)
 
       while(1) {
         // * move to next char, exit at EOF
@@ -150,40 +150,36 @@ int main (int argc, char *argv[]) {
       fclose(fp);
 
     } else { // ! p2s2 compression (multi-threaded)
-      // * split file (mapped to memory) into three partitions
+      // * split file (mapped to memory in *src) into three partitions
       // * partitions are evenly sized
       int fd = fileno(fp);            // convert FILE struct to file descriptor
       char *src = mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
       int part_size = file_size / 3;  // partition size
                                       // first partition starts at src[0]
-      int off1 = file_size / 3;       // second partition starts at src[off1]
+      int off1 = part_size;           // second partition starts at src[off1]
       int off2 = off1 * 2;            // third partition starts at src[off2]
-
-      pthread_t t;
 
       // * arg declaration
       arg_t *arg1 = malloc(sizeof(*arg1)); 
       arg_t *arg2 = malloc(sizeof(*arg2));
       arg_t *arg3 = malloc(sizeof(*arg3));
 
-
       // * arg initialization
-      // empty pointers 
       // point to eventual string output 
-      // of each worker thread
+      // of each worker thread;
       // initialized to "null" to avoid segfaults
-      // whenever my code messes up (as it does)
       char *arg1_out = "null";
       char *arg2_out = "null";
       char *arg3_out = "null";
 
-      // initialize arg structs for each function so that
-      // they can be passed through pthread_create()
-      arg_init(arg1, 0, off1, src, arg1_out); // init arg1
-      arg_init(arg2, off1, off2, src, arg2_out);
-      arg_init(arg3, off2, file_size, src, arg3_out);
+      // * initialize arg structs for each function
+      // so they can be passed through pthread_create()
+      arg_init(arg1, 0, off1, src, arg1_out);         // arg1: goes from 0 to just before off1;     output stored in arg1_out
+      arg_init(arg2, off1, off2, src, arg2_out);      // arg2: goes from off1 to just before off2;  output stored in arg2_out
+      arg_init(arg3, off2, file_size, src, arg3_out); // arg3: goes from off2 to EOF;               output stored in arg3_out
       
-      char *test = add_nullterm(src, file_size);
+      // * threading (fun)
+      pthread_t t;
       pthread_create(&t, NULL, worker, (void *) arg1); // first partition
       pthread_create(&t, NULL, worker, (void *) arg2); // second partition
       pthread_create(&t, NULL, worker, (void *) arg3); // third partition
@@ -194,6 +190,6 @@ int main (int argc, char *argv[]) {
   }
   // The whole thing breaks if I change this and
   // I'm not brave enough to try and figure out why.
-  if (file_size <= 4096) write_(count, chr_last);
+  if (file_size <= THRESHOLD) write_(count, chr_last);
   return 0;
 }
