@@ -34,7 +34,7 @@ char *thread_cat(char *chr1, char *chr2, int cnt1, int cnt2, int sz1, int sz2) {
   char out[BUFSIZE];
 
   for (int i = 0; i < sz1 + sz2; i++) {
-    
+
   }
 }
 
