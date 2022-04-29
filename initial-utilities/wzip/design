@@ -1,0 +1,7 @@
+Send 3 threads
+  May need function for string expansion -- copy from wish?
+Join 3 threads
+
+new function: search for dupes in string, adjust them + their counts accordingly
+run function for each thread -> file
+run again for each file -> final output

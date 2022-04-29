@@ -7,7 +7,22 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
-#define THRESHOLD 0 // when file bigger than this size, multithreading will be used
+#define BUFSIZE 2006240 // i know, i know
+
+pthread_mutex_t lock;
+
+int thres = 0;
+
+int *arg1_out_cnts;
+int *arg2_out_cnts;
+int *arg3_out_cnts;
+char *arg1_out_chrs;
+char *arg2_out_chrs;
+char *arg3_out_chrs;
+
+int *arg1_sz = 0;
+int *arg2_sz = 0;
+
 
 // ! assumes file has already been opened
 void write_(int count, char last) {
@@ -15,78 +30,143 @@ void write_(int count, char last) {
   printf("%c", last);                     // write char to stdout
 }
 
-void output_add(char *s, int ct, char c) {
-  char temp[strlen(s) + sizeof(int) + sizeof(char)]; // allocate string size of s with room for another entry
-  // for ()
+char *thread_cat(char *chr1, char *chr2, int cnt1, int cnt2, int sz1, int sz2) {
+  char out[BUFSIZE];
+
+  for (int i = 0; i < sz1 + sz2; i++) {
+    
+  }
+}
+
+// I've spent 90% of my time on this project
+// trying to get all of these pointers to work.
+// Every time I close my eyes, I see asterisks.
+void change(char **a, char *b) {
+  *a = b;
 }
 
 typedef struct __arg_val {
   int start;  // index to start at
   int end;    // index to end at
   char *in;   // mmap
+  int mod;    // determines ret arrays
 } arg_val_t;
 
-typedef struct __ret_val {
-  char *out;
-} ret_val_t;
 
 typedef struct __arg {
   arg_val_t arg_val; // passed to worker thread
-  ret_val_t ret_val; // passed back to main thread
 } arg_t;
 
+// * worker thread
+// takes in mapped file contents
+// returns char[] with the following format:
+//   2a-1b-3c
+// this is not the final product, it will be read and processed
+// after combining it with every other partition & thread
 void *worker(void *arg) {
+    // pthread_mutex_lock(&lock);
+
   arg_t *newarg = (arg_t*) arg;
   int start = newarg->arg_val.start;// printf("start: %d\n", start);
   int end   = newarg->arg_val.end; //printf("end: %d\n", end);
   char *in  = newarg->arg_val.in;
-  char *out = newarg->ret_val.out; //printf("out: %s\n", out);
+  int mod   = newarg->arg_val.mod;
+
+  if (!mod) {
+    printf("mod: %d; start: %d; end: %d; length: %d;\n", mod, start, end, end-start);
+    for (int i = start; i < end; i++) {
+      printf("%c", in[i]);
+    }
+    printf("\n\n");
+  }
 
   int count = 0;
   char chr_current;
   char chr_last;
+  bool first_read = false;
 
+  int *out_cnts;  int cnts_i = 0;
+  char *out_chrs; int chrs_i = 0;
   
+  switch(mod) {
+    case 1:
+      out_cnts = arg1_out_cnts;
+      out_chrs = arg1_out_chrs;
+      break;
+    case 2:
+      out_cnts = arg2_out_cnts;
+      out_chrs = arg2_out_chrs;
+      break;
+    case 3:
+      out_cnts = arg3_out_cnts;
+      out_chrs = arg3_out_chrs;
+      break;
+  }
+
+  //    out_cnts = &arg1_out_cnts;
+   //   out_chrs = &arg1_out_chrs;
+      // printf("%p\n", out_cnts);
+      // printf("%p\n", arg1_out_cnts);
+
   for (int i = start; i <= end; i++) {
     // * special case for very first character
     chr_current = in[i];
 
-    if (i == 0) {
+    if (!first_read) {
       chr_last = chr_current;
       count = 1;
+
+      // not sure why this line is needed, but it is.
+      // it's 3am and i really don't feel like trying
+      // to figure out why
+      // if (start != 0) count++;
+
+      first_read = true;
+      // printf("first: %c\n", chr_last);
     }
+
     // * add to count of current character
-    else if (chr_last == chr_current) {
+    else if (chr_last == chr_current && i < end) {
+      // printf("here %d\n", count + 1);
       ++count;
+      // printf("%c",chr_current);
     }
     // * if character changes, make it the new
     // * character to be compared to the others
     else {
+      // if (i == end) ++count;
+      // printf("done");
       //TODO: write
-      // fwrite(&count,sizeof(int), 1, stdout);
-      char str[100];
-      sprintf(str, "%ls", &count);
-      printf("%d", &count);
-      printf("%c", chr_last);
+      
+      *(out_cnts + cnts_i) = count;     
+      *(out_chrs + chrs_i) = chr_last;  
 
+      // printf("%d%c ", count, chr_last);
+      printf("%d%c ", out_cnts[cnts_i], out_chrs[chrs_i]);
+      cnts_i++;
+      chrs_i++;
+    
       chr_last = chr_current;
       count = 1;
     }
   }
-  printf("\n");
+  // printf("\n");
+    // pthread_mutex_unlock(&lock);
   return NULL;
 }
 
   
 // * initialize an argument struct to be passed to worker
-void arg_init(arg_t *arg, int start, int end, char *in, char *out) {
-  arg->arg_val.start  = start;  //printf("arg_init: %d\n", start);
-  arg->arg_val.end    = end;    //printf("arg_init: %d\n", end);
-  arg->arg_val.in     = in;     //printf("arg_init: %s\n", in);
-  arg->ret_val.out    = out;    //printf("arg_init: %s\n\n", out);
+void arg_init(arg_t *arg, int start, int end, char *in, int mod) {
+  arg->arg_val.start  = start;  // printf("arg_init: %d\n", start);
+  arg->arg_val.end    = end;    // printf("arg_init: %d\n", end);
+  arg->arg_val.in     = in;     // printf("arg_init: %s\n", in);
+  arg->arg_val.mod    = mod;
 }
 
 int main (int argc, char *argv[]) {
+  pthread_mutex_init(&lock, NULL);
+
   if (argc == 1) {
     printf("wzip: file1 [file2 ...]\n");
     exit(1);
@@ -118,7 +198,7 @@ int main (int argc, char *argv[]) {
     file_size = st.st_size;
 
     // * determine compression algorithm based on file size
-    if (file_size <= THRESHOLD) { // ! p2s1 compression (non-threaded)
+    if (file_size <= thres) { // ! p2s1 compression (non-threaded)
 
       while(1) {
         // * move to next char, exit at EOF
@@ -164,32 +244,32 @@ int main (int argc, char *argv[]) {
       arg_t *arg2 = malloc(sizeof(*arg2));
       arg_t *arg3 = malloc(sizeof(*arg3));
 
-      // * arg initialization
-      // point to eventual string output 
-      // of each worker thread;
-      // initialized to "null" to avoid segfaults
-      char *arg1_out = "null";
-      char *arg2_out = "null";
-      char *arg3_out = "null";
+      arg1_out_cnts = malloc(BUFSIZE * sizeof(int));
+      arg2_out_cnts = malloc(BUFSIZE * sizeof(int));
+      arg3_out_cnts = malloc(BUFSIZE * sizeof(int));
+      arg1_out_chrs = malloc(BUFSIZE * sizeof(char));
+      arg2_out_chrs = malloc(BUFSIZE * sizeof(char));
+      arg3_out_chrs = malloc(BUFSIZE * sizeof(char));
 
       // * initialize arg structs for each function
       // so they can be passed through pthread_create()
-      arg_init(arg1, 0, off1, src, arg1_out);         // arg1: goes from 0 to just before off1;     output stored in arg1_out
-      arg_init(arg2, off1, off2, src, arg2_out);      // arg2: goes from off1 to just before off2;  output stored in arg2_out
-      arg_init(arg3, off2, file_size, src, arg3_out); // arg3: goes from off2 to EOF;               output stored in arg3_out
+      arg_init(arg1, 0, off1, src, 1);             // arg1: goes from 0 to just before off1;
+      arg_init(arg2, off1, off2, src, 2);          // arg2: goes from off1 to just before off2;
+      arg_init(arg3, off2, file_size, src, 3); // arg3: goes from off2 to EOF;
       
-      // * threading (fun)
+      // * threading
       pthread_t t;
       pthread_create(&t, NULL, worker, (void *) arg1); // first partition
       pthread_create(&t, NULL, worker, (void *) arg2); // second partition
       pthread_create(&t, NULL, worker, (void *) arg3); // third partition
 
       pthread_join(t, NULL);
-
+      
+      // printf("%d", file_size);, out_cnti
     }
   }
   // The whole thing breaks if I change this and
   // I'm not brave enough to try and figure out why.
-  if (file_size <= THRESHOLD) write_(count, chr_last);
+  if (file_size <= thres) write_(count, chr_last);
   return 0;
 }
