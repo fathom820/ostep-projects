@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
-#define BUFSIZE 2006240 // i know, i know
+#define BUFSIZE 2006240 
 
 pthread_mutex_t lock;
 
@@ -20,9 +20,13 @@ char *arg1_out_chrs;
 char *arg2_out_chrs;
 char *arg3_out_chrs;
 
-int *arg1_sz = 0;
-int *arg2_sz = 0;
+int t1_sz = 0;
+int t2_sz = 0;
+int t3_sz = 0;
 
+char *final_chrs;
+int *final_cnts;
+int final_sz = 0;
 
 // ! assumes file has already been opened
 void write_(int count, char last) {
@@ -30,20 +34,126 @@ void write_(int count, char last) {
   printf("%c", last);                     // write char to stdout
 }
 
-char *thread_cat(char *chr1, char *chr2, int cnt1, int cnt2, int sz1, int sz2) {
-  char out[BUFSIZE];
+void thread_cat() {
+  bool done = false;
+  final_cnts = malloc(BUFSIZE * sizeof(char));
+  final_chrs = malloc(BUFSIZE * sizeof(char));
 
-  for (int i = 0; i < sz1 + sz2; i++) {
+  int i = 0;
+  for (int j = 0; j < t1_sz; j++) {
+    final_cnts[i] = arg1_out_cnts[j];
+    final_chrs[i] = arg1_out_chrs[j];
 
+    // printf("%d%c ", final_cnts[i], final_chrs[i]);
+    i++;
+    final_sz++;
+   }
+  for (int j = 0; j < t2_sz; j++) {
+    final_cnts[i] = arg2_out_cnts[j];
+    final_chrs[i] = arg2_out_chrs[j];
+
+    // printf("%d%c ", final_cnts[i], final_chrs[i]);
+    i++;
+    final_sz++;
+  }
+  for(int j = 0; j < t3_sz; j++) {
+    final_cnts[i] = arg3_out_cnts[j];
+    final_chrs[i] = arg3_out_chrs[j];
+
+    // printf("%d%c ", final_cnts[i], final_chrs[i]);
+    i++;
+    final_sz++;
+  }
+  
+  for (i = 0; i < final_sz; i++) {
+    // printf("%d%c ", final_cnts[i], final_chrs[i]);
+  }
+
+  // * repeat n=3 times (max amount of re-occurrences);
+  int temp_cnts[final_sz];
+  // char final_chrs[final_sz];
+
+  for (int n = 0; n < 3; n++) {
+    for (i = 0; i < final_sz; i++) {
+      if(i != final_sz - 1) {
+        if (final_chrs[i] == final_chrs[i+1]) {
+          final_cnts[i] += final_cnts[i+1]; 
+          
+          for (int j = i+1; j < final_sz-1; j++) {
+            final_chrs[j] = final_chrs[j+1];
+            final_cnts[j] = final_cnts[j+1];
+          }
+          final_sz--;
+        }
+      }   
+    }
+  }
+
+  for (int i = 0; i < final_sz; i++) {
+    printf("%d%c ", final_cnts[i], final_chrs[i]);
   }
 }
+
+// * possibly the worst code I've ever written
+// (it works though)
+// void thread_cat_() { // meow
+//   final_chrs = malloc(BUFSIZE * sizeof(char));
+//   final_cnts = malloc(BUFSIZE * sizeof(int));
+
+//   bool first_done = false;
+//   bool second_done = false;
+
+//   int i;
+
+//   for (i = 0; i < t1_sz-1; i++) {
+//     final_chrs[i] = arg1_out_chrs[i];
+//     final_cnts[i] = arg1_out_cnts[i];
+//     printf("\n%d%c ", final_cnts[i], final_chrs[i]);
+//     // printf("%d", t1_sz);
+//   }
+//   // compare last of first thread to first of second
+//   if (arg1_out_chrs[i] == arg2_out_chrs[0]) {
+//     final_chrs[i] = arg1_out_chrs[i];
+//     final_cnts[i] = arg1_out_cnts[i] + arg2_out_cnts[0];
+//     printf("\n%d%c ", final_cnts[i], final_chrs[i]); 
+//     i++; // skip first of second thread since we already added its count
+//   } else {
+//     final_chrs[i] = arg1_out_chrs[i];
+//     final_cnts[i] = arg1_out_cnts[i];
+//     printf("\n%d%c ", final_cnts[i], final_chrs[i]); 
+//   }
+
+//   for (i; i < t2_sz - 1; i++) {
+//     final_chrs[i] = arg2_out_chrs[i];
+//     final_cnts[i] = arg2_out_cnts[i];
+//     printf("\n%d%c ", final_cnts[i], final_chrs[i]);
+
+//   }
+//   if (arg2_out_chrs[i] == arg3_out_chrs[0]) {
+//     final_chrs[i] = arg2_out_chrs[i];
+//     final_cnts[i] = arg2_out_cnts[i] + arg3_out_cnts[0];
+//     printf("\n%d%c ", final_cnts[i], final_chrs[i]);
+//     i++;
+//   } else {
+//     final_chrs[i] = arg2_out_chrs[i];
+//     final_cnts[i] = arg2_out_cnts[i];
+//     // printf("\n%d%c ", final_cnts[i], final_chrs[i]);
+//   }
+
+//   for (i; i < t3_sz; i++) {
+//     final_chrs[i] = arg3_out_chrs[i];
+//     final_cnts[i] = arg3_out_cnts[i];
+//     printf("\n%d%c ", final_cnts[i], final_chrs[i]);
+//   }
+// }
+
 
 // I've spent 90% of my time on this project
 // trying to get all of these pointers to work.
 // Every time I close my eyes, I see asterisks.
-void change(char **a, char *b) {
-  *a = b;
-}
+// void change(char **a, char *b) {
+//   *a = b;
+// }
 
 typedef struct __arg_val {
   int start;  // index to start at
@@ -64,7 +174,7 @@ typedef struct __arg {
 // this is not the final product, it will be read and processed
 // after combining it with every other partition & thread
 void *worker(void *arg) {
-    // pthread_mutex_lock(&lock);
+  // pthread_mutex_lock(&lock);
 
   arg_t *newarg = (arg_t*) arg;
   int start = newarg->arg_val.start;// printf("start: %d\n", start);
@@ -72,7 +182,7 @@ void *worker(void *arg) {
   char *in  = newarg->arg_val.in;
   int mod   = newarg->arg_val.mod;
 
-  if (!mod) {
+  if (!mod) { // for debugging, never runs unless i manually change "!mod" to "mod"
     printf("mod: %d; start: %d; end: %d; length: %d;\n", mod, start, end, end-start);
     for (int i = start; i < end; i++) {
       printf("%c", in[i]);
@@ -116,11 +226,6 @@ void *worker(void *arg) {
       chr_last = chr_current;
       count = 1;
 
-      // not sure why this line is needed, but it is.
-      // it's 3am and i really don't feel like trying
-      // to figure out why
-      // if (start != 0) count++;
-
       first_read = true;
       // printf("first: %c\n", chr_last);
     }
@@ -138,20 +243,32 @@ void *worker(void *arg) {
       // printf("done");
       //TODO: write
       
-      *(out_cnts + cnts_i) = count;     
+      *(out_cnts + cnts_i) = count;
       *(out_chrs + chrs_i) = chr_last;  
 
       // printf("%d%c ", count, chr_last);
-      printf("%d%c ", out_cnts[cnts_i], out_chrs[chrs_i]);
+      // printf("%d%c ", out_cnts[cnts_i], out_chrs[chrs_i]);
       cnts_i++;
       chrs_i++;
+
+      switch(mod) {
+        case 1:
+          t1_sz++;
+          break;
+        case 2:
+          t2_sz++;
+          break;
+        case 3:
+          t3_sz++;
+          break;
+      }
     
       chr_last = chr_current;
       count = 1;
     }
   }
   // printf("\n");
-    // pthread_mutex_unlock(&lock);
+  // pthread_mutex_unlock(&lock);
   return NULL;
 }
 
@@ -266,6 +383,10 @@ int main (int argc, char *argv[]) {
       pthread_join(t, NULL);
       
       // printf("%d", file_size);, out_cnti
+
+      // printf("%d %d %d", t1_sz, t2_sz, t3_sz);
+
+      thread_cat();
     }
   }
   // The whole thing breaks if I change this and
