@@ -35,19 +35,19 @@ void write_(int count, char last) {
 }
 
 void thread_cat() {
-  bool done = false;
   final_cnts = malloc(BUFSIZE * sizeof(char));
   final_chrs = malloc(BUFSIZE * sizeof(char));
-
+  
   int i = 0;
   for (int j = 0; j < t1_sz; j++) {
-    final_cnts[i] = arg1_out_cnts[j];
-    final_chrs[i] = arg1_out_chrs[j];
-
+    // final_cnts[i] = arg1_out_cnts[j];
+    // final_chrs[i] = arg1_out_chrs[j];
+    
     // printf("%d%c ", final_cnts[i], final_chrs[i]);
     i++;
     final_sz++;
-   }
+  }
+  // printf("here\n");
   for (int j = 0; j < t2_sz; j++) {
     final_cnts[i] = arg2_out_cnts[j];
     final_chrs[i] = arg2_out_chrs[j];
@@ -65,9 +65,7 @@ void thread_cat() {
     final_sz++;
   }
   
-  for (i = 0; i < final_sz; i++) {
-    // printf("%d%c ", final_cnts[i], final_chrs[i]);
-  }
+  
 
   // * repeat n=3 times (max amount of re-occurrences);
   int temp_cnts[final_sz];
@@ -94,66 +92,6 @@ void thread_cat() {
   }
 }
 
-// * possibly the worst code I've ever written
-// (it works though)
-// void thread_cat_() { // meow
-//   final_chrs = malloc(BUFSIZE * sizeof(char));
-//   final_cnts = malloc(BUFSIZE * sizeof(int));
-
-//   bool first_done = false;
-//   bool second_done = false;
-
-//   int i;
-
-//   for (i = 0; i < t1_sz-1; i++) {
-//     final_chrs[i] = arg1_out_chrs[i];
-//     final_cnts[i] = arg1_out_cnts[i];
-//     printf("\n%d%c ", final_cnts[i], final_chrs[i]);
-//     // printf("%d", t1_sz);
-//   }
-//   // compare last of first thread to first of second
-//   if (arg1_out_chrs[i] == arg2_out_chrs[0]) {
-//     final_chrs[i] = arg1_out_chrs[i];
-//     final_cnts[i] = arg1_out_cnts[i] + arg2_out_cnts[0];
-//     printf("\n%d%c ", final_cnts[i], final_chrs[i]); 
-//     i++; // skip first of second thread since we already added its count
-//   } else {
-//     final_chrs[i] = arg1_out_chrs[i];
-//     final_cnts[i] = arg1_out_cnts[i];
-//     printf("\n%d%c ", final_cnts[i], final_chrs[i]); 
-//   }
-
-//   for (i; i < t2_sz - 1; i++) {
-//     final_chrs[i] = arg2_out_chrs[i];
-//     final_cnts[i] = arg2_out_cnts[i];
-//     printf("\n%d%c ", final_cnts[i], final_chrs[i]);
-
-//   }
-//   if (arg2_out_chrs[i] == arg3_out_chrs[0]) {
-//     final_chrs[i] = arg2_out_chrs[i];
-//     final_cnts[i] = arg2_out_cnts[i] + arg3_out_cnts[0];
-//     printf("\n%d%c ", final_cnts[i], final_chrs[i]);
-//     i++;
-//   } else {
-//     final_chrs[i] = arg2_out_chrs[i];
-//     final_cnts[i] = arg2_out_cnts[i];
-//     // printf("\n%d%c ", final_cnts[i], final_chrs[i]);
-//   }
-
-//   for (i; i < t3_sz; i++) {
-//     final_chrs[i] = arg3_out_chrs[i];
-//     final_cnts[i] = arg3_out_cnts[i];
-//     printf("\n%d%c ", final_cnts[i], final_chrs[i]);
-//   }
-// }
-
-
-// I've spent 90% of my time on this project
-// trying to get all of these pointers to work.
-// Every time I close my eyes, I see asterisks.
-// void change(char **a, char *b) {
-//   *a = b;
-// }
 
 typedef struct __arg_val {
   int start;  // index to start at
@@ -213,11 +151,6 @@ void *worker(void *arg) {
       break;
   }
 
-  //    out_cnts = &arg1_out_cnts;
-   //   out_chrs = &arg1_out_chrs;
-      // printf("%p\n", out_cnts);
-      // printf("%p\n", arg1_out_cnts);
-
   for (int i = start; i <= end; i++) {
     // * special case for very first character
     chr_current = in[i];
@@ -247,7 +180,7 @@ void *worker(void *arg) {
       *(out_chrs + chrs_i) = chr_last;  
 
       // printf("%d%c ", count, chr_last);
-      // printf("%d%c ", out_cnts[cnts_i], out_chrs[chrs_i]);
+      // ! printf("%d%c ", out_cnts[cnts_i], out_chrs[chrs_i]);
       cnts_i++;
       chrs_i++;
 

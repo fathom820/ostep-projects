@@ -1,0 +1,1 @@
+../../tester/run-tests.sh: line 27: 20646 Segmentation fault      ./wzip tests/6.in
